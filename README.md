@@ -1,0 +1,2 @@
+# TRIG
+CSE.MSU.EDU
