@@ -1,0 +1,72 @@
+###ASSIGNMENT SPECIFICATIONS###
+1.The program will repeatedly prompt the user to select from the following menu of options:
+    A.Display the value of the factorial of N.
+    B.Display the value of the sine of X.
+    C.Display the value of the cosine of X.
+    M.Display the menu of options.
+    Q.Exit from the program.
+
+The program will accept both upper case and lower case letters for the menu options.
+The program will diplay the menu of options once when execution begins,whenever the user selects Option M,and whenever the user selects an invalid menu option.
+2.Option A will permit the user to enter an integer value N.If N is a positive integer,it will calculate and display the value of the factorial of N.
+
+3.Option B will permit the user to enter a real value X(measured in radians).It will calculate
+and display the value of the sine of X.
+
+4.Option C will permit the user to enter a real value X(measured in radians).It will calculate 
+and display the value of the cosine of X.
+
+5.The program will use a power series approximation for Option B and C.
+
+from math import pi
+
+# round a number (x) to nearest 10 digits
+def rounded(x):
+	return round(x, 10)
+
+# get the factorial of a number (x)
+# factorial(x) is the product of every number from 1 to N inclusive
+def factorial(x):
+	n = 1; # n is the result
+	# multiply n by every number from 1 to x inclusive
+	for i in range(2, x + 1):
+		n *= i
+	return n
+
+""" get the result of the cos and sin formulas
+    where the functions are sin(x radians) or cos(x radians),
+    n is the start value (n = x for sin, n = 1 for cos), and
+    i_start is the exponent and factorial base in the first term """
+def computeSeries(x, n, i_start):
+	iterations = 20 # iterations is twice the amount of terms to use
+	multiplier = 1
+	for i in range(i_start, i_start + iterations, 2): # i increases by 2 each term
+		multiplier *= -1 # alternates between addition and subtraction each term
+		next_term = (x**i) / factorial(i) # each term is (x^i) / i!
+		n += multiplier * next_term # add or subtract from final result
+	return n
+
+# get sin of x radians
+def sin(x):
+	return rounded(computeSeries(x, x, 3))
+
+# get cos of x radians
+def cos(x):
+	return rounded(computeSeries(x, 1, 2))
+
+# get sin of x degrees
+def sinDeg(x):
+	return sin(x * pi / 180)
+
+# get cos of x degrees
+def cosDeg(x):
+	return cos(x * pi / 180)
+
+# test the functions
+print(sin(pi / 6)); # 0.5
+print(sinDeg(45)); # 0.7071
+print(sinDeg(52)); # 0.78801
+
+print(cos(pi / 3)); # 0.5
+print(cosDeg(45)); # 0.7071
+print(cosDeg(52)); # 0.615661
